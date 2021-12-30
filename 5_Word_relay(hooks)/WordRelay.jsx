@@ -1,12 +1,12 @@
 const React = require('react');
-const {Component} = React;
+const {useState, useRef} = React;
 
 const WordRelay = () =>{
-    const [word, setWord] = React.useState('안녕')
-    const [value, setValue] = React.useState()
-    const [result, setResult] = React.useState()
+    const [word, setWord] = useState('안녕')
+    const [value, setValue] = useState()
+    const [result, setResult] = useState()
 
-    const onRefInput = React.useRef(null)
+    const onRefInput = useRef(null)
 
     const onSubmitForm = (e) =>{
         e.preventDefault();
@@ -22,12 +22,9 @@ const WordRelay = () =>{
         onRefInput.current.focus()
     };
 
-
     const onChangeInput = (e) =>{
         setValue(e.target.value)
     };
-
-
 
      return (
          <>
