@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 
-export default Try = ({tryInfo}) =>{
+const Try = memo(({tryInfo}) => {
     return(
         <li>
             <div>{tryInfo.try}</div>
             <div>{tryInfo.result}</div>
         </li>
     )
-}
+})
+
+export default Try;

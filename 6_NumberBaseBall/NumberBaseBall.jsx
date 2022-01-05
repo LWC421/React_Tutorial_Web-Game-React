@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Try from './Try'
 
 //숫자를 랜덤하게 뽑는다
@@ -13,15 +13,15 @@ const getNumbers = () => {
     return array
 }
 
-export const NumberBaseBall = () =>{
-    const [result, setResult] = useState()
-    const [value, setValue] = useState()
+const NumberBaseBall = memo(() =>{
+    const [result, setResult] = useState('')
+    const [value, setValue] = useState('')
     const [answer, setAnswer] = useState(getNumbers())
     const [tries, setTries] = useState([])
 
-
     const onSubmitForm = (e) => {
         e.preventDefault()
+        console.log(answer)
         if (value === answer.join('')){
             setResult("홈런")
             setTries((prevTries) => {return [...prevTries, {try: value, result:"홈런"}]} )
@@ -32,7 +32,7 @@ export const NumberBaseBall = () =>{
             setTries([])
         }
         else{
-            const answerArray = value.split('').map( (item) => parseInt(v))
+            const answerArray = value.split('').map( (item) => parseInt(item))
             let strike = 0
             let ball = 0
             if (tries.length >= 9){
@@ -51,8 +51,7 @@ export const NumberBaseBall = () =>{
                         ball += 1
                     }
                 }
-                setTries((prevTries) => {return [...prevTries, {try: value, result:"홈런"}]} )
-                // setTries([...tries, {try: value, result:`${strike} 스트라이크 ${ball} 볼 입니다`}])
+                setTries((prevTries) => {return [...prevTries, {try: value, result:`${strike} 스트라이크 ${ball} 볼 입니다`}]} )
             }
         }
     }
@@ -77,4 +76,7 @@ export const NumberBaseBall = () =>{
             </ul>
         </>    
     )
-}
+})
+
+
+export default NumberBaseBall
