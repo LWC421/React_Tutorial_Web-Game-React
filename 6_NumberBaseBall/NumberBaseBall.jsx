@@ -19,6 +19,8 @@ const NumberBaseBall = memo(() =>{
     const [answer, setAnswer] = useState(getNumbers())
     const [tries, setTries] = useState([])
 
+
+
     const onSubmitForm = (e) => {
         e.preventDefault()
         console.log(answer)
