@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'React'
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'React'
 import Ball from "./Ball"
 
 const getWinNumbers = () => {
@@ -14,40 +14,45 @@ const getWinNumbers = () => {
 }
 
 const Lotto = () => {
-    const [winNumbers, setWinNumbers] = useState(getWinNumbers())
+    const [winNumbers, setWinNumbers] = useState(lottoNumbers)
     const [winBalls, setWinBalls] = useState([])
+    const lottoNumbers = useMemo(() => {getWinNumbers(), []})
     const [bonus, setBonus] = useState(null)
     const [redo, setRedo] = useState(false)
 
-    const timeouts = useRef()
 
-    const initiialize = () => {
+    const timeouts = useRef([])
+
+    //2번째 인자가 빈 배열이다.
+    //ComponentDidMount와 ComponentWillUnmount의 역할
+
+    //2번째 인자가 존재한다.
+    //ComponentDidMount와 ComponentDidUpdate 둘 다 수행 및 ComponentWillUnmount
+    useEffect(() => {
         for(let i = 0; i < winNumbers.length -1; i++){
-            timeouts[i].current = setTimeout(() => {
+            timeouts.current[i] = setTimeout(() => {
                 setWinBalls((prevBalls) => [...prevBalls, winNumbers[i]])
-            }, 1000)
+            }, (i+1) * 1000)
         }
-        timeouts[6].current = setTimeout(() => {
+        timeouts.current[6] = setTimeout(() => {
             setBonus(winNumbers[6])
             setRedo(true)
         }, 7000)
         return () => {
-            this.timeouts.forEach( () => {
+            this.timeouts.current.forEach( () => {
                 clearTimeout(v)
             })
         }
-    }
+    }, [timeouts.current])
 
-    useEffect(() => {
-        initiialize()
-    }, [])
-
-    const onClickRedo =  () => {
+    const onClickRedo =  useCallback(() => {
+        console.log("Clicked Redo")
         setWinNumbers(getWinNumbers)
         setWinBalls([])
         setBonus(null)
         setRedo(false)
-    }
+        timeouts.current = [];
+    })
 
     return(
         <>
